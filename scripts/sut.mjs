@@ -13,7 +13,7 @@ import { existsSync, rmSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
 const REPO = 'https://github.com/JVCSampaio/service-desk.git'
-const REF = process.env.SUT_REF || '520888b0b6e6150b43b35c27cd4a03503ec73733'
+const REF = process.env.SUT_REF || 'eb934d7f0befa0333a173edbb353a65d549f62c4'
 const DIR = resolve(process.env.SUT_DIR || '.sut/service-desk')
 const PORT = process.env.SUT_PORT || '8011'
 const windows = process.platform === 'win32'

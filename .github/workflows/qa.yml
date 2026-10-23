@@ -52,10 +52,12 @@ jobs:
       - name: Formatação e tipos
         run: npm run lint
 
+      # Push e PR testam a versão fixada em scripts/sut.mjs; a execução agendada testa a main
+      # mais recente do ServiceDesk, para pegar regressões introduzidas lá.
       - name: Preparar o ServiceDesk (sistema sob teste)
         run: npm run sut:prepare
         env:
-          SUT_REF: ${{ inputs.sut_ref }}
+          SUT_REF: ${{ inputs.sut_ref || (github.event_name == 'schedule' && 'main') || '' }}
 
       - name: Executar cenários
         uses: cypress-io/github-action@v7

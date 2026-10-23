@@ -77,7 +77,7 @@ Funcionalidade: Regras do ciclo de atendimento
     E o arquivo começa com BOM UTF-8 e traz o cabeçalho esperado
     E a linha desse chamado traz o título iniciado por apóstrofo
 
-  @bug @BUG-05
+  @regressao @BUG-05
   Cenário: Salvar sem alterações não cria versão nem evento novo
     Dado que existe um chamado aberto sem equipe
     E outro atendente atribuiu o chamado à "Equipe Dados"

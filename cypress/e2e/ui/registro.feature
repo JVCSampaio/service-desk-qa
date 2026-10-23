@@ -27,7 +27,7 @@ Funcionalidade: Registro de chamados pela interface
     Então o campo "Título" fica marcado como inválido
     E nenhum chamado é enviado para a API
 
-  @bug @BUG-03
+  @regressao @BUG-03
   Cenário: Título preenchido só com espaços extras recebe aviso claro
     Quando registro um chamado com o título "    a"
     Então vejo um aviso que indica o campo "Título"

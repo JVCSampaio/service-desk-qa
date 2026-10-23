@@ -5,19 +5,25 @@ Defeitos encontrados no [ServiceDesk](https://github.com/JVCSampaio/service-desk
 durante a sessão exploratória e a automação desta suíte. Ambiente: Windows 11, Chrome 155,
 Python 3.14 e Node.js 24, com a aplicação compilada servida pela API.
 
-Cada defeito tem um cenário `@bug` que descreve o comportamento **esperado** e, por isso, falha
-enquanto o defeito existir. Esses cenários ficam fora do gate do CI (`not @bug`) e podem ser
-executados com `npm run test:bugs`. Quando um defeito for corrigido, o cenário passa a passar e
-a tag `@bug` é removida, transformando-o em teste de regressão.
+Ciclo de cada defeito:
 
-| ID                | Defeito                                                                                  | Severidade | Prioridade | Cenário                  |
-| ----------------- | ---------------------------------------------------------------------------------------- | ---------- | ---------- | ------------------------ |
-| [BUG-01](#bug-01) | Busca acima de 120 caracteres mostra erro genérico e fila desatualizada                  | Baixa      | Baixa      | `ui/fila.feature`        |
-| [BUG-02](#bug-02) | Alerta de erro continua na tela depois que a consulta seguinte dá certo                  | Média      | Média      | `ui/resiliencia.feature` |
-| [BUG-03](#bug-03) | Título com espaços passa no formulário, é recusado pela API e o aviso não indica o campo | Baixa      | Baixa      | `ui/registro.feature`    |
-| [BUG-04](#bug-04) | Histórico mostra códigos internos (`open → in_progress`, `prioridade: high`)             | Baixa      | Média      | `ui/atendimento.feature` |
-| [BUG-05](#bug-05) | Salvar sem alterações cria versão e evento novos, provocando conflito falso              | Média      | Média      | `api/regras.feature`     |
-| [BUG-06](#bug-06) | Falha de rede aparece como "Failed to fetch" e a fila diz que não há chamados            | Baixa      | Média      | `ui/resiliencia.feature` |
+1. **Reproduzir:** um cenário `@bug` descreve o comportamento **esperado** e falha enquanto o
+   defeito existir. Ele fica fora do gate do CI (`not @bug`) e roda com `npm run test:bugs`.
+2. **Reportar:** issue no ServiceDesk com passos, esperado e obtido, causa provável e evidência.
+3. **Corrigir:** correção no ServiceDesk, com testes próprios (Pytest e Playwright).
+4. **Verificar:** o cenário passa a passar, a tag `@bug` vira `@regressao` e ele entra no gate.
+
+Os seis defeitos abaixo completaram o ciclo: issues [#1 a #6](https://github.com/JVCSampaio/service-desk/issues?q=is%3Aissue+label%3Abug),
+corrigidas no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7). Hoje não há defeitos conhecidos em aberto.
+
+| ID                | Defeito                                                                                  | Severidade | Prioridade | Issue                                                     | Situação                                                                |
+| ----------------- | ---------------------------------------------------------------------------------------- | ---------- | ---------- | --------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [BUG-01](#bug-01) | Busca acima de 120 caracteres mostra erro genérico e fila desatualizada                  | Baixa      | Baixa      | [#1](https://github.com/JVCSampaio/service-desk/issues/1) | Corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) |
+| [BUG-02](#bug-02) | Alerta de erro continua na tela depois que a consulta seguinte dá certo                  | Média      | Média      | [#2](https://github.com/JVCSampaio/service-desk/issues/2) | Corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) |
+| [BUG-03](#bug-03) | Título com espaços passa no formulário, é recusado pela API e o aviso não indica o campo | Baixa      | Baixa      | [#3](https://github.com/JVCSampaio/service-desk/issues/3) | Corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) |
+| [BUG-04](#bug-04) | Histórico mostra códigos internos (`open → in_progress`, `prioridade: high`)             | Baixa      | Média      | [#4](https://github.com/JVCSampaio/service-desk/issues/4) | Corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) |
+| [BUG-05](#bug-05) | Salvar sem alterações cria versão e evento novos, provocando conflito falso              | Média      | Média      | [#5](https://github.com/JVCSampaio/service-desk/issues/5) | Corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) |
+| [BUG-06](#bug-06) | Falha de rede aparece como "Failed to fetch" e a fila diz que não há chamados            | Baixa      | Média      | [#6](https://github.com/JVCSampaio/service-desk/issues/6) | Corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) |
 
 Critérios: **severidade** mede o impacto no uso (nenhum defeito bloqueia o fluxo principal);
 **prioridade** sugere a ordem de correção considerando frequência e custo da correção.
@@ -28,11 +34,12 @@ Critérios: **severidade** mede o impacto no uso (nenhum defeito bloqueia o flux
 
 **Busca acima de 120 caracteres mostra erro genérico e fila desatualizada**
 
-| Campo                   | Valor                                                           |
-| ----------------------- | --------------------------------------------------------------- |
-| Componente              | Interface: fila de atendimento                                  |
-| Severidade / prioridade | Baixa / Baixa                                                   |
-| Cenário automatizado    | [`fila.feature`](../cypress/e2e/ui/fila.feature), tag `@BUG-01` |
+| Campo                   | Valor                                                                                                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Componente              | Interface: fila de atendimento                                                                                                                                  |
+| Severidade / prioridade | Baixa / Baixa                                                                                                                                                   |
+| Cenário automatizado    | [`fila.feature`](../cypress/e2e/ui/fila.feature), tag `@BUG-01`                                                                                                 |
+| Issue e situação        | [#1](https://github.com/JVCSampaio/service-desk/issues/1), corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7); o cenário agora é regressão |
 
 **Passos**
 
@@ -52,6 +59,8 @@ e devolve 422 acima disso, mas o campo de busca não tem `maxLength`
 
 **Sugestão:** `maxLength={120}` no campo de busca.
 
+Evidência, antes da correção:
+
 ![BUG-01](evidencias/BUG-01-busca-longa.png)
 
 ---
@@ -60,11 +69,12 @@ e devolve 422 acima disso, mas o campo de busca não tem `maxLength`
 
 **Alerta de erro continua na tela depois que a consulta seguinte dá certo**
 
-| Campo                   | Valor                                                                         |
-| ----------------------- | ----------------------------------------------------------------------------- |
-| Componente              | Interface: tratamento de erros                                                |
-| Severidade / prioridade | Média / Média                                                                 |
-| Cenário automatizado    | [`resiliencia.feature`](../cypress/e2e/ui/resiliencia.feature), tag `@BUG-02` |
+| Campo                   | Valor                                                                                                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Componente              | Interface: tratamento de erros                                                                                                                                  |
+| Severidade / prioridade | Média / Média                                                                                                                                                   |
+| Cenário automatizado    | [`resiliencia.feature`](../cypress/e2e/ui/resiliencia.feature), tag `@BUG-02`                                                                                   |
+| Issue e situação        | [#2](https://github.com/JVCSampaio/service-desk/issues/2), corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7); o cenário agora é regressão |
 
 **Passos**
 
@@ -84,6 +94,8 @@ sucesso
 
 **Sugestão:** `setError('')` quando a listagem for concluída com sucesso.
 
+Evidência, antes da correção:
+
 ![BUG-02](evidencias/BUG-02-alerta-preso.png)
 
 ---
@@ -92,11 +104,12 @@ sucesso
 
 **Título com espaços passa no formulário, é recusado pela API e o aviso não indica o campo**
 
-| Campo                   | Valor                                                                   |
-| ----------------------- | ----------------------------------------------------------------------- |
-| Componente              | Interface e API: registro de chamado                                    |
-| Severidade / prioridade | Baixa / Baixa                                                           |
-| Cenário automatizado    | [`registro.feature`](../cypress/e2e/ui/registro.feature), tag `@BUG-03` |
+| Campo                   | Valor                                                                                                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Componente              | Interface e API: registro de chamado                                                                                                                            |
+| Severidade / prioridade | Baixa / Baixa                                                                                                                                                   |
+| Cenário automatizado    | [`registro.feature`](../cypress/e2e/ui/registro.feature), tag `@BUG-03`                                                                                         |
+| Issue e situação        | [#3](https://github.com/JVCSampaio/service-desk/issues/3), corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7); o cenário agora é regressão |
 
 **Passos**
 
@@ -121,6 +134,8 @@ e os detalhes do erro 422 são descartados
 **Sugestão:** validar o valor sem espaços nas pontas antes de enviar e traduzir o campo do 422
 para a mensagem exibida.
 
+Evidência, antes da correção:
+
 ![BUG-03](evidencias/BUG-03-titulo-com-espacos.png)
 
 ---
@@ -129,11 +144,12 @@ para a mensagem exibida.
 
 **Histórico mostra códigos internos em vez dos nomes da tela**
 
-| Campo                   | Valor                                                                         |
-| ----------------------- | ----------------------------------------------------------------------------- |
-| Componente              | API (texto dos eventos) e interface (histórico)                               |
-| Severidade / prioridade | Baixa / Média                                                                 |
-| Cenário automatizado    | [`atendimento.feature`](../cypress/e2e/ui/atendimento.feature), tag `@BUG-04` |
+| Campo                   | Valor                                                                                                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Componente              | API (texto dos eventos) e interface (histórico)                                                                                                                 |
+| Severidade / prioridade | Baixa / Média                                                                                                                                                   |
+| Cenário automatizado    | [`atendimento.feature`](../cypress/e2e/ui/atendimento.feature), tag `@BUG-04`                                                                                   |
+| Issue e situação        | [#4](https://github.com/JVCSampaio/service-desk/issues/4), corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7); o cenário agora é regressão |
 
 **Passos**
 
@@ -152,6 +168,8 @@ e [`main.py:179`](https://github.com/JVCSampaio/service-desk/blob/520888b0b6e615
 **Sugestão:** gravar os rótulos em português ou guardar os códigos em campos próprios do evento
 e traduzi-los na interface.
 
+Evidência, antes da correção:
+
 ![BUG-04](evidencias/BUG-04-historico-com-codigos.png)
 
 ---
@@ -160,11 +178,12 @@ e traduzi-los na interface.
 
 **Salvar sem alterações cria versão e evento novos, provocando conflito falso**
 
-| Campo                   | Valor                                                                |
-| ----------------------- | -------------------------------------------------------------------- |
-| Componente              | API: `PATCH /api/tickets/{id}`                                       |
-| Severidade / prioridade | Média / Média                                                        |
-| Cenário automatizado    | [`regras.feature`](../cypress/e2e/api/regras.feature), tag `@BUG-05` |
+| Campo                   | Valor                                                                                                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Componente              | API: `PATCH /api/tickets/{id}`                                                                                                                                  |
+| Severidade / prioridade | Média / Média                                                                                                                                                   |
+| Cenário automatizado    | [`regras.feature`](../cypress/e2e/api/regras.feature), tag `@BUG-05`                                                                                            |
+| Issue e situação        | [#5](https://github.com/JVCSampaio/service-desk/issues/5), corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7); o cenário agora é regressão |
 
 **Passos**
 
@@ -185,6 +204,8 @@ com os atuais
 **Sugestão:** quando equipe e prioridade forem iguais às atuais, devolver o chamado sem gravar.
 O comportamento esperado deve ser confirmado com o responsável pelo produto.
 
+Evidência, antes da correção:
+
 ![BUG-05](evidencias/BUG-05-salvar-sem-alteracao.png)
 
 ---
@@ -193,11 +214,12 @@ O comportamento esperado deve ser confirmado com o responsável pelo produto.
 
 **Falha de rede aparece como "Failed to fetch" e a fila diz que não há chamados**
 
-| Campo                   | Valor                                                                         |
-| ----------------------- | ----------------------------------------------------------------------------- |
-| Componente              | Interface: tratamento de erros                                                |
-| Severidade / prioridade | Baixa / Média                                                                 |
-| Cenário automatizado    | [`resiliencia.feature`](../cypress/e2e/ui/resiliencia.feature), tag `@BUG-06` |
+| Campo                   | Valor                                                                                                                                                           |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Componente              | Interface: tratamento de erros                                                                                                                                  |
+| Severidade / prioridade | Baixa / Média                                                                                                                                                   |
+| Cenário automatizado    | [`resiliencia.feature`](../cypress/e2e/ui/resiliencia.feature), tag `@BUG-06`                                                                                   |
+| Issue e situação        | [#6](https://github.com/JVCSampaio/service-desk/issues/6), corrigido no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7); o cenário agora é regressão |
 
 **Passos**
 
@@ -216,5 +238,7 @@ qualquer erro sem `detail` em texto
 
 **Sugestão:** capturar a falha de rede com uma mensagem própria, diferenciar 5xx de 422 e não
 exibir o estado vazio quando a listagem falhar.
+
+Evidência, antes da correção:
 
 ![BUG-06](evidencias/BUG-06-falha-de-rede.png)

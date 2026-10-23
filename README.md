@@ -9,9 +9,10 @@ uma central de chamados em React + FastAPI. Os cenários são escritos em **Gher
 executados pelo **Cypress** contra a aplicação real e validam as respostas da API por **contrato
 (JSON Schema)**.
 
-- **53 cenários no gate do CI** (40 de API e 13 de interface), executados em menos de 1 minuto.
-- **6 defeitos reais encontrados** no ServiceDesk, documentados com passos, causa provável e
-  um cenário automatizado que reproduz cada um ([BUGS.md](docs/BUGS.md)).
+- **59 cenários no gate do CI** (41 de API e 18 de interface), executados em menos de 1 minuto.
+- **6 defeitos reais encontrados** no ServiceDesk e levados até o fim: cenário que reproduz,
+  issue com evidência, correção no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) e cenário promovido a teste de regressão
+  ([BUGS.md](docs/BUGS.md)).
 - **Plano de testes** com riscos, rastreabilidade de requisitos e sessão exploratória
   ([PLANO_DE_TESTES.md](docs/PLANO_DE_TESTES.md)).
 
@@ -49,18 +50,19 @@ e verifica na tela que o controle de versão impediu a sobrescrita.
 
 ## Defeitos encontrados
 
-| ID                            | Defeito                                                                                  | Severidade |
-| ----------------------------- | ---------------------------------------------------------------------------------------- | ---------- |
-| [BUG-01](docs/BUGS.md#bug-01) | Busca acima de 120 caracteres mostra erro genérico e fila desatualizada                  | Baixa      |
-| [BUG-02](docs/BUGS.md#bug-02) | Alerta de erro continua na tela depois que a consulta seguinte dá certo                  | Média      |
-| [BUG-03](docs/BUGS.md#bug-03) | Título com espaços passa no formulário, é recusado pela API e o aviso não indica o campo | Baixa      |
-| [BUG-04](docs/BUGS.md#bug-04) | Histórico mostra códigos internos (`open → in_progress`)                                 | Baixa      |
-| [BUG-05](docs/BUGS.md#bug-05) | Salvar sem alterações cria versão nova e provoca conflito falso para outro atendente     | Média      |
-| [BUG-06](docs/BUGS.md#bug-06) | Falha de rede aparece como "Failed to fetch" e a fila diz que não há chamados            | Baixa      |
+| ID                            | Defeito                                                                                  | Severidade | Issue                                                     |
+| ----------------------------- | ---------------------------------------------------------------------------------------- | ---------- | --------------------------------------------------------- |
+| [BUG-01](docs/BUGS.md#bug-01) | Busca acima de 120 caracteres mostra erro genérico e fila desatualizada                  | Baixa      | [#1](https://github.com/JVCSampaio/service-desk/issues/1) |
+| [BUG-02](docs/BUGS.md#bug-02) | Alerta de erro continua na tela depois que a consulta seguinte dá certo                  | Média      | [#2](https://github.com/JVCSampaio/service-desk/issues/2) |
+| [BUG-03](docs/BUGS.md#bug-03) | Título com espaços passa no formulário, é recusado pela API e o aviso não indica o campo | Baixa      | [#3](https://github.com/JVCSampaio/service-desk/issues/3) |
+| [BUG-04](docs/BUGS.md#bug-04) | Histórico mostra códigos internos (`open → in_progress`)                                 | Baixa      | [#4](https://github.com/JVCSampaio/service-desk/issues/4) |
+| [BUG-05](docs/BUGS.md#bug-05) | Salvar sem alterações cria versão nova e provoca conflito falso para outro atendente     | Média      | [#5](https://github.com/JVCSampaio/service-desk/issues/5) |
+| [BUG-06](docs/BUGS.md#bug-06) | Falha de rede aparece como "Failed to fetch" e a fila diz que não há chamados            | Baixa      | [#6](https://github.com/JVCSampaio/service-desk/issues/6) |
 
-Os cenários `@bug` descrevem o comportamento esperado e falham enquanto o defeito existir.
-Eles ficam fora do gate do CI e rodam com `npm run test:bugs`. Quando um defeito for corrigido,
-basta remover a tag para o cenário virar teste de regressão.
+Todos foram corrigidos no [PR #7](https://github.com/JVCSampaio/service-desk/pull/7) do ServiceDesk, com testes próprios lá (Pytest
+e Playwright). Aqui, cada cenário seguiu o mesmo ciclo: enquanto o defeito existia, ficava com a
+tag `@bug`, fora do gate do CI, falhando de propósito (`npm run test:bugs`); depois da correção,
+virou `@regressao` e entrou no gate. Hoje não há defeitos conhecidos em aberto.
 
 ## Executar
 
@@ -80,7 +82,7 @@ a interface. `npm test` inicia a aplicação com banco novo, roda os cenários e
 | `npm test`                              | Todos os cenários, exceto defeitos conhecidos (`not @bug`) |
 | `npm run test:smoke`                    | Caminho crítico (`@smoke`)                                 |
 | `npm run test:api`                      | Só a API (`@api`)                                          |
-| `npm run test:bugs`                     | Reproduz os defeitos conhecidos (devem falhar)             |
+| `npm run test:bugs`                     | Reproduz defeitos conhecidos em aberto (hoje não há)       |
 | `npm run sut:start` + `npm run cy:open` | Modo interativo do Cypress                                 |
 | `npm run lint`                          | Prettier e verificação de tipos do TypeScript              |
 
@@ -109,7 +111,8 @@ O relatório Cucumber em HTML fica em `reports/cucumber-report.html`; capturas d
 
 O [workflow](.github/workflows/qa.yml) roda em push, pull request, todos os dias às 06:00
 (horário de Brasília) e manualmente, com expressão de tags e versão do ServiceDesk escolhidas
-no disparo. Etapas: formatação e tipos, preparação do sistema sob teste, cenários no Chrome,
+no disparo. Push e pull request testam a versão fixada do ServiceDesk; a execução diária testa a
+`main` mais recente, para pegar regressões introduzidas lá. Etapas: formatação e tipos, preparação do sistema sob teste, cenários no Chrome,
 relatório e capturas como artefato e publicação do relatório no GitHub Pages.
 
 ## Estrutura

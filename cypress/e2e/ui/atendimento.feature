@@ -51,7 +51,7 @@ Funcionalidade: Atendimento de um chamado pela interface
     Então vejo o alerta "Este chamado foi alterado. Recarregue antes de salvar novamente."
     E o detalhe é recarregado com a prioridade "Urgente"
 
-  @bug @BUG-04
+  @regressao @BUG-04
   Cenário: Histórico usa os mesmos nomes de status da tela
     Dado que existe um chamado em atendimento
     E que abri esse chamado na central

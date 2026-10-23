@@ -173,8 +173,8 @@ Then('o histórico registra a resolução e a retomada', () => {
   chamado().then((c) =>
     cy.detalheDoChamado(c.id).then(({ events }) => {
       const transicoes = events.filter((e) => e.kind === 'transition').map((e) => e.note)
-      expect(transicoes.at(-2)).to.match(/^in_progress → resolved\./)
-      expect(transicoes.at(-1)).to.match(/^resolved → in_progress\./)
+      expect(transicoes.at(-2)).to.match(/^Em atendimento → Resolvido\./)
+      expect(transicoes.at(-1)).to.match(/^Resolvido → Em atendimento\./)
     }),
   )
 })

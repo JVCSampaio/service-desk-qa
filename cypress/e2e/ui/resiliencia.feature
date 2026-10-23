@@ -25,7 +25,7 @@ Funcionalidade: Erros, segurança e layout da interface
     E que estou na central de chamados
     Então a página não tem rolagem horizontal
 
-  @bug @BUG-02
+  @regressao @BUG-02
   Cenário: Alerta de erro some quando a consulta seguinte dá certo
     Dado que a API vai responder erro 500 uma vez ao listar chamados
     E que estou na central de chamados
@@ -33,7 +33,7 @@ Funcionalidade: Erros, segurança e layout da interface
     Então a fila volta a listar chamados
     E o alerta de erro some
 
-  @bug @BUG-06
+  @regressao @BUG-06
   Cenário: Queda de rede mostra mensagem em português
     Dado que a rede vai cair ao listar chamados
     E que estou na central de chamados

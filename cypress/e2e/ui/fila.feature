@@ -30,7 +30,7 @@ Funcionalidade: Fila de atendimento
     Então a fila mostra o chamado "Desconto de 100% não aplicado"
     E a fila não mostra o chamado "Desconto de 1000 não aplicado"
 
-  @bug @BUG-01
+  @regressao @BUG-01
   Cenário: Busca acima do limite de 120 caracteres não mostra erro genérico
     Dado que estou na central de chamados
     Quando colo na busca um texto de 121 caracteres
