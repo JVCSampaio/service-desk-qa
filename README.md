@@ -15,6 +15,10 @@ executados pelo **Cypress** contra a aplicação real e validam as respostas da 
 - **Plano de testes** com riscos, rastreabilidade de requisitos e sessão exploratória
   ([PLANO_DE_TESTES.md](docs/PLANO_DE_TESTES.md)).
 
+<a href="https://jvcsampaio.github.io/service-desk-qa/">
+  <img src="docs/relatorio-bdd.png" alt="Relatório Cucumber publicado pelo CI com os cenários em português aprovados" width="820">
+</a>
+
 ## O que é testado
 
 | Tipo de teste             | Arquivo                                                                    | Exemplos                                                                                             |
