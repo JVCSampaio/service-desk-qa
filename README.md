@@ -9,7 +9,7 @@ uma central de chamados em React + FastAPI. Os cenários são escritos em **Gher
 executados pelo **Cypress** contra a aplicação real e validam as respostas da API por **contrato
 (JSON Schema)**.
 
-- **53 cenários no gate do CI** (40 de API e 13 de interface), executados em cerca de 15 segundos.
+- **53 cenários no gate do CI** (40 de API e 13 de interface), executados em menos de 1 minuto.
 - **6 defeitos reais encontrados** no ServiceDesk, documentados com passos, causa provável e
   um cenário automatizado que reproduz cada um ([BUGS.md](docs/BUGS.md)).
 - **Plano de testes** com riscos, rastreabilidade de requisitos e sessão exploratória
