@@ -1,0 +1,15 @@
+{
+  "$id": "metricas",
+  "title": "Indicadores da central (MetricsView)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["total", "active", "urgent", "overdue", "resolved", "sla_rate"],
+  "properties": {
+    "total": { "type": "integer", "minimum": 0 },
+    "active": { "type": "integer", "minimum": 0 },
+    "urgent": { "type": "integer", "minimum": 0 },
+    "overdue": { "type": "integer", "minimum": 0 },
+    "resolved": { "type": "integer", "minimum": 0 },
+    "sla_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+  }
+}

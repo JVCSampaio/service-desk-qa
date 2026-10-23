@@ -1,0 +1,104 @@
+name: QA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Regressão diária às 06:00 (horário de Brasília), mesmo sem commits novos.
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Expressão de tags (ex.: @smoke, @api and not @bug, @bug)'
+        required: true
+        default: 'not @bug'
+      sut_ref:
+        description: 'Commit ou branch do ServiceDesk (vazio = versão fixada)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PUBLICAR: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule') }}
+
+jobs:
+  cypress:
+    name: Cypress (API e interface)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Instalar dependências e o binário do Cypress
+        uses: cypress-io/github-action@v7
+        with:
+          runTests: false
+
+      - name: Formatação e tipos
+        run: npm run lint
+
+      - name: Preparar o ServiceDesk (sistema sob teste)
+        run: npm run sut:prepare
+        env:
+          SUT_REF: ${{ inputs.sut_ref }}
+
+      - name: Executar cenários
+        uses: cypress-io/github-action@v7
+        with:
+          install: false
+          browser: chrome
+          start: npm run sut:start
+          wait-on: 'http://127.0.0.1:8011/api/health'
+          expose: tags=${{ inputs.tags || 'not @bug' }}
+
+      - name: Guardar relatório e capturas
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: relatorio-qa
+          path: |
+            reports/
+            cypress/screenshots/
+          if-no-files-found: ignore
+
+      - name: Preparar o relatório para o GitHub Pages
+        if: env.PUBLICAR == 'true'
+        run: mkdir -p _site && cp reports/cucumber-report.html _site/index.html
+
+      - uses: actions/upload-pages-artifact@v5
+        if: env.PUBLICAR == 'true'
+        with:
+          path: _site
+
+  relatorio:
+    name: Publicar relatório
+    needs: cypress
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v5

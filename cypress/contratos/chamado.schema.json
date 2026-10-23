@@ -1,0 +1,40 @@
+{
+  "$id": "chamado",
+  "title": "Chamado (TicketView)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "description",
+    "requester",
+    "category",
+    "priority",
+    "status",
+    "assignee",
+    "created_at",
+    "updated_at",
+    "resolved_at",
+    "version",
+    "due_at",
+    "overdue",
+    "sla_met"
+  ],
+  "properties": {
+    "id": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string", "minLength": 5, "maxLength": 120 },
+    "description": { "type": "string", "minLength": 10, "maxLength": 3000 },
+    "requester": { "type": "string", "minLength": 2, "maxLength": 80 },
+    "category": { "enum": ["Aplicações", "Infraestrutura", "Acessos", "Dados"] },
+    "priority": { "enum": ["low", "normal", "high", "urgent"] },
+    "status": { "enum": ["open", "in_progress", "resolved"] },
+    "assignee": { "enum": ["", "Equipe Aplicações", "Equipe Infraestrutura", "Equipe Dados"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "resolved_at": { "type": ["string", "null"], "format": "date-time" },
+    "version": { "type": "integer", "minimum": 1 },
+    "due_at": { "type": "string", "format": "date-time" },
+    "overdue": { "type": "boolean" },
+    "sla_met": { "type": ["boolean", "null"] }
+  }
+}

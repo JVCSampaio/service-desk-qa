@@ -1,0 +1,26 @@
+{
+  "$id": "detalhe-do-chamado",
+  "title": "Chamado com histórico (TicketDetail)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ticket", "events"],
+  "properties": {
+    "ticket": { "$ref": "chamado" },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "ticket_id", "kind", "note", "created_at"],
+        "properties": {
+          "id": { "type": "integer", "minimum": 1 },
+          "ticket_id": { "type": "integer", "minimum": 1 },
+          "kind": { "enum": ["created", "updated", "transition", "comment"] },
+          "note": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

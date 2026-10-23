@@ -1,0 +1,11 @@
+{
+  "$id": "saude",
+  "title": "Verificação de saúde",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "schema_version"],
+  "properties": {
+    "status": { "const": "ok" },
+    "schema_version": { "const": 1 }
+  }
+}

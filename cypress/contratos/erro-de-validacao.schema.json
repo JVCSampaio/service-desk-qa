@@ -1,0 +1,22 @@
+{
+  "$id": "erro-de-validacao",
+  "title": "Erro de validação (422)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["detail"],
+  "properties": {
+    "detail": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type", "loc", "msg"],
+        "properties": {
+          "type": { "type": "string" },
+          "loc": { "type": "array", "items": { "type": ["string", "integer"] } },
+          "msg": { "type": "string" }
+        }
+      }
+    }
+  }
+}

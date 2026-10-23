@@ -1,0 +1,10 @@
+{
+  "$id": "erro",
+  "title": "Erro de negócio (404/409)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["detail"],
+  "properties": {
+    "detail": { "type": "string", "minLength": 1 }
+  }
+}

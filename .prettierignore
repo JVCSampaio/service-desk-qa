@@ -1,0 +1,6 @@
+reports/
+.sut/
+cypress/screenshots/
+cypress/videos/
+docs/evidencias/
+package-lock.json

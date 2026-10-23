@@ -1,0 +1,43 @@
+{
+  "name": "service-desk-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Suíte de testes Cypress + BDD (Gherkin) + validação de contrato de API para o ServiceDesk.",
+  "license": "MIT",
+  "scripts": {
+    "sut:prepare": "node scripts/sut.mjs prepare",
+    "sut:start": "node scripts/sut.mjs start",
+    "cy:open": "cypress open --e2e --browser chrome",
+    "cy:run": "cypress run --e2e --browser chrome --expose \"tags=not @bug\"",
+    "cy:smoke": "cypress run --e2e --browser chrome --expose \"tags=@smoke and not @bug\"",
+    "cy:api": "cypress run --e2e --browser chrome --expose \"tags=@api and not @bug\"",
+    "cy:bugs": "cypress run --e2e --browser chrome --expose tags=@bug",
+    "test": "start-server-and-test sut:start http-get://127.0.0.1:8011/api/health cy:run",
+    "test:smoke": "start-server-and-test sut:start http-get://127.0.0.1:8011/api/health cy:smoke",
+    "test:api": "start-server-and-test sut:start http-get://127.0.0.1:8011/api/health cy:api",
+    "test:bugs": "start-server-and-test sut:start http-get://127.0.0.1:8011/api/health cy:bugs",
+    "typecheck": "tsc --noEmit",
+    "lint": "prettier --check . && tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "28.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "2.2.8",
+    "@testing-library/cypress": "10.1.3",
+    "@types/node": "24.13.3",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "cypress": "16.2.0",
+    "esbuild": "0.28.2",
+    "prettier": "3.9.10",
+    "start-server-and-test": "3.0.13",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "allowScripts": {
+    "cypress@16.2.0": true,
+    "esbuild@0.28.2": true
+  }
+}
